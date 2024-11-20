@@ -9,10 +9,26 @@ const getState = ({ getStore, getActions, setStore }) => {
                     .then((result) => result.json())
                     .then(data => setStore({ contacts: data.contacts }))
 			},
-            createContact: (newContact) => {
-                const store = getStore();
-                const updatedContacts = [...store.contacts, newContact];
-                setStore({ contacts: updatedContacts });
+            createContact: async (newContact) => {
+				console.log(newContact);
+				
+                try {
+                    const response = await fetch(
+                        'https://playground.4geeks.com/contact/agendas/Lchaves/contacts',
+                        {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "Application/json"
+                            },
+                            body: JSON.stringify(newContact)
+                        }
+                    );
+                    if (!response.ok) {
+                        throw new Error('Failed to update contact');
+                    }
+                } catch (error) {
+                    console.error('Error updating contact:', error);
+                }
             },
 
             updateContactAPI: async (newContact) => {

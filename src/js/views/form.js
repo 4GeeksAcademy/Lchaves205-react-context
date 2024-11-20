@@ -33,7 +33,7 @@ export const Create = () => {
 
         actions.createContact(newContact);
 
-        await actions.updateContactAPI(newContact);
+        // await actions.updateContactAPI(newContact);
 
         
         setFormData({
