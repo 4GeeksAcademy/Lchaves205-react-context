@@ -1,52 +1,45 @@
-import { array } from "prop-types";
-
 const getState = ({ getStore, getActions, setStore }) => {
-	return {
-		store: {
-			demo: [
-				{
-					title: "FIRST",
-					background: "white",
-					initial: "white"
-				},
-				{
-					title: "SECOND",
-					background: "white",
-					initial: "white"
-				}
-			],
-			contacts:[]
-		},
-		actions: {
-			// Use getActions to call a function within a fuction
-			exampleFunction: () => {
-				getActions().changeColor(0, "green");
-			},
+    return {
+        store: {
+            contacts: []
+        },
+        actions: {
 			getContacts: () => {
-				
-					fetch("https://playground.4geeks.com/contact/agendas/Lchaves")
-					.then((result)=> result.json())
-					.then(data => setStore({ contacts: data.contacts }))
-					// catch error 
-					// try
-			
+                fetch("https://playground.4geeks.com/contact/agendas/Lchaves")
+                    .then((result) => result.json())
+                    .then(data => setStore({ contacts: data.contacts }))
 			},
-			changeColor: (index, color) => {
-				//get the store
-				const store = getStore();
+            createContact: (newContact) => {
+                const store = getStore();
+                const updatedContacts = [...store.contacts, newContact];
+                setStore({ contacts: updatedContacts });
+            },
 
-				//we have to loop the entire demo array to look for the respective index
-				//and change its color
-				const demo = store.demo.map((elm, i) => {
-					if (i === index) elm.background = color;
-					return elm;
-				});
-
-				//reset the global store
-				setStore({ demo: demo });
-			}
-		}
-	};
+            updateContactAPI: async (newContact) => {
+                try {
+                    const slug = 'your-slug-here';  
+                    const contactId = 'new-contact-id';  
+                    const response = await fetch(
+                        `https://playground.4geeks.com/agendas/Lchaves/contacts/${contactId}`,
+                        {
+                            method: "PUT",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify(newContact)
+                        }
+                    );
+                    if (!response.ok) {
+                        throw new Error('Failed to update contact');
+                    }
+                    const updatedContact = await response.json();
+                    console.log('Contact updated', updatedContact);
+                } catch (error) {
+                    console.error('Error updating contact:', error);
+                }
+            },
+        }
+    };
 };
 
 export default getState;
