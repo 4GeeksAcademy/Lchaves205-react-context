@@ -8,24 +8,15 @@ export const Card = () => {
 
     useEffect(() => {
         console.log("Fetching contacts...");
-        actions.getContacts()
-        // .then(() => {
-        //     setLoading(false); 
-        // }).catch((err) => {
-        //     console.error("Error fetching contacts:", err);
-        //     setError("Failed to load contacts");
-        //     setLoading(false); 
-        // });
+        actions.getContacts();
     }, []);
 
     console.log("Contacts in store:", store.contacts);
 
-    // if (loading) return <p>Loading contacts...</p>; 
-    // if (error) return <p>{error}</p>;
     return (
         <>
             {store.contacts.length === 0 ? (
-                <p>No contacts available</p> 
+                <p>No contacts available</p>
             ) : (
                 store.contacts.map((item, index) => (
                     <div className="card mb-3" style={{ maxWidth: "540px" }} key={index}>
@@ -48,8 +39,14 @@ export const Card = () => {
                             </div>
                         </div>
                         <div className="d-grid gap-2 d-md-block">
-                            <button className="btn btn-primary" type="button">Button</button>
-                            <button className="btn btn-primary" type="button">Button</button>
+                            <button className="btn btn-primary" type="button">Edit</button>
+                            {/* Delete Button */}
+                            <button 
+                                className="btn btn-danger" 
+                                onClick={() => actions.deleteContact(item.id)} 
+                                type="button">
+                                Delete
+                            </button>
                         </div>
                     </div>
                 ))
