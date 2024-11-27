@@ -1,5 +1,6 @@
 import React, { useState, useContext } from "react";
 import { Context } from "../store/appContext"; 
+import { Link } from "react-router-dom";
 import "../../styles/home.css";
 
 export const Create = () => {
@@ -11,7 +12,6 @@ export const Create = () => {
         address: "",
     });
 
-   
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({
@@ -20,7 +20,6 @@ export const Create = () => {
         });
     };
 
-    // Handle form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -33,8 +32,6 @@ export const Create = () => {
 
         actions.createContact(newContact);
 
-
-        
         setFormData({
             name: "",
             email: "",
@@ -94,7 +91,15 @@ export const Create = () => {
                     />
                 </div>
 
-                <button type="submit" className="btn btn-primary">Submit</button>
+                <div className="d-flex justify-content-between">
+                    {/* Submit Button */}
+                    <button type="submit" className="btn btn-primary">Submit</button>
+
+                    {/* Back to Home Button */}
+                    <Link to="/">
+                        <button type="button" className="btn btn-secondary">Back to Home</button>
+                    </Link>
+                </div>
             </form>
         </div>
     );

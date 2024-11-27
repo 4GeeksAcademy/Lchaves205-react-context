@@ -12,12 +12,12 @@ export const Card = () => {
     });
 
     useEffect(() => {
-        actions.getContacts();
+        actions.getContacts(); // Fetch contacts on mount
     }, []);
 
     const handleEditClick = (contact) => {
-        setEditingContactId(contact.id);
-        setEditFormData(contact); 
+        setEditingContactId(contact.id); // Set the contact being edited
+        setEditFormData(contact); // Prefill the form with existing contact data
     };
 
     const handleChange = (e) => {
@@ -26,27 +26,26 @@ export const Card = () => {
     };
 
     const handleSave = async () => {
-        await actions.updateContactAPI(editingContactId, editFormData); 
-        setEditingContactId(null); 
-        actions.getContacts(); 
+        await actions.updateContactAPI(editingContactId, editFormData); // Make PUT request
+        setEditingContactId(null); // Exit edit mode
+        actions.getContacts(); // Refresh the contact list
     };
 
     return (
-        <>
-            {store.contacts.length === 0 ? (
-                <p>No contacts available</p>
-            ) : (
-                store.contacts.map((contact) => (
-                    <div className="card mb-3" style={{ maxWidth: "540px" }} key={contact.id}>
-                        <div className="row g-0">
-                            <div className="col-md-4">
+        <div className="container mt-4">
+            <div className="row">
+                {store.contacts.length === 0 ? (
+                    <p>No contacts available</p>
+                ) : (
+                    store.contacts.map((contact) => (
+                        <div className="col-md-6 col-lg-4 mb-4" key={contact.id}>
+                            <div className="card h-100 shadow-sm">
                                 <img
-                                    src={`https://picsum.photos/300/188?random=${contact.id}`}
-                                    className="img-fluid rounded-start"
+                                    src={`https://picsum.photos/300/200?random=${contact.id}`}
+                                    className="card-img-top rounded-top"
                                     alt="Contact"
+                                    style={{ objectFit: "cover", height: "200px" }}
                                 />
-                            </div>
-                            <div className="col-md-8">
                                 <div className="card-body">
                                     {editingContactId === contact.id ? (
                                         <>
@@ -83,43 +82,53 @@ export const Card = () => {
                                                 onChange={handleChange}
                                                 placeholder="Address"
                                             />
-                                            <button className="btn btn-success me-2" onClick={handleSave}>
-                                                Save
-                                            </button>
-                                            <button
-                                                className="btn btn-secondary"
-                                                onClick={() => setEditingContactId(null)}
-                                            >
-                                                Cancel
-                                            </button>
+                                            <div className="d-flex justify-content-between">
+                                                <button className="btn btn-success" onClick={handleSave}>
+                                                    Save
+                                                </button>
+                                                <button
+                                                    className="btn btn-secondary"
+                                                    onClick={() => setEditingContactId(null)}
+                                                >
+                                                    Cancel
+                                                </button>
+                                            </div>
                                         </>
                                     ) : (
                                         <>
                                             {/* Display Contact Details */}
                                             <h5 className="card-title">{contact.name}</h5>
-                                            <p className="card-text">{contact.phone}</p>
-                                            <p className="card-text">{contact.email}</p>
-                                            <p className="card-text">{contact.address}</p>
-                                            <button
-                                                className="btn btn-primary me-2"
-                                                onClick={() => handleEditClick(contact)}
-                                            >
-                                                Edit
-                                            </button>
-                                            <button
-                                                className="btn btn-danger"
-                                                onClick={() => actions.deleteContact(contact.id)}
-                                            >
-                                                Delete
-                                            </button>
+                                            <p className="card-text mb-1">
+                                                <strong>Phone:</strong> {contact.phone}
+                                            </p>
+                                            <p className="card-text mb-1">
+                                                <strong>Email:</strong> {contact.email}
+                                            </p>
+                                            <p className="card-text">
+                                                <strong>Address:</strong> {contact.address}
+                                            </p>
+                                            <div className="d-flex justify-content-between mt-3">
+                                                <button
+                                                    className="btn btn-primary"
+                                                    onClick={() => handleEditClick(contact)}
+                                                >
+                                                    Edit
+                                                </button>
+                                                <button
+                                                    className="btn btn-danger"
+                                                    onClick={() => actions.deleteContact(contact.id)}
+                                                >
+                                                    Delete
+                                                </button>
+                                            </div>
                                         </>
                                     )}
                                 </div>
                             </div>
                         </div>
-                    </div>
-                ))
-            )}
-        </>
+                    ))
+                )}
+            </div>
+        </div>
     );
 };
