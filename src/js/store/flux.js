@@ -35,34 +35,32 @@ const getState = ({ getStore, getActions, setStore }) => {
             },
 
             // Update a contact via PUT request
-            updateContactAPI: async (newContact) => {
+            updateContactAPI: async (contactId, updatedContact) => {
                 try {
-                    const slug = 'your-slug-here';  
-                    const contactId = 'new-contact-id';  
                     const response = await fetch(
-                        `https://playground.4geeks.com/agendas/Lchaves/contacts/${contactId}`,
+                        `https://playground.4geeks.com/contact/agendas/Lchaves/contacts/${contactId}`,
                         {
                             method: "PUT",
                             headers: {
-                                "Content-Type": "application/json"
+                                "Content-Type": "application/json",
                             },
-                            body: JSON.stringify(newContact)
+                            body: JSON.stringify(updatedContact),
                         }
                     );
                     if (!response.ok) {
-                        throw new Error('Failed to update contact');
+                        throw new Error("Failed to update contact");
                     }
-                    const updatedContact = await response.json();
-                    console.log('Contact updated', updatedContact);
+                    console.log("Contact updated successfully");
                 } catch (error) {
-                    console.error('Error updating contact:', error);
+                    console.error("Error updating contact:", error);
                 }
             },
+            
 
             // Delete a contact from the API and update the store
             deleteContact: async (contactId) => {
                 try {
-                    // Send DELETE request to API
+                    I
                     const response = await fetch(
                         `https://playground.4geeks.com/contact/agendas/Lchaves/contacts/${contactId}`,
                         {
@@ -73,7 +71,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                         throw new Error('Failed to delete contact');
                     }
 
-                    // After successfully deleting, remove the contact from the store
+                   
                     const store = getStore();
                     const updatedContacts = store.contacts.filter(contact => contact.id !== contactId);
                     setStore({ contacts: updatedContacts });
